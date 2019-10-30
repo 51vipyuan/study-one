@@ -6,7 +6,21 @@
 
 <script>
     export default {
-        name: "Mine"
+        name: "Mine",
+        data(){
+            return {
+                
+            }
+        },
+        created(){
+            console.log(111);
+        },
+        computed:{
+
+        },
+        watch:{
+            
+        }
     }
 </script>
 

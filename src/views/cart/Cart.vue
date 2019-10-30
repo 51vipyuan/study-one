@@ -20,9 +20,9 @@
                             <div class="bottomContent">
                                 <p class="shopPrice">{{goods.price|moneyFormat}}</p>
                                 <div class="shopDeal">
-                                    <span>-</span>
-                                    <input disabled type="number" value="1">
-                                    <span>+</span>
+                                    <span @click="removeOutCart(goods.id,goods.num)">-</span>
+                                    <input disabled type="number" :value="goods.num">
+                                    <span @click="addToCart(goods.id, goods.name, goods.small_image ,goods.price)">+</span>
                                 </div>
                             </div>
                         </div>
@@ -32,14 +32,14 @@
             <!--底部通栏-->
             <div class="tabBar">
                 <div class="tabBarLeft">
-                    <a href="javascript:;" class="cartCheckBox"></a>
+                    <a href="javascript:;" class="cartCheckBox" :checked="isSelectedAll" @click="selectedAll(isSelectedAll)"></a>
                     <span style="font-size: 16px;">全选</span>
                     <div class="selectAll">
-                        合计：<span class="totalPrice">199.00</span>
+                        合计：<span class="totalPrice">{{totalPrice|moneyFormat}}</span>
                     </div>
                 </div>
                 <div class="tabBarRight">
-                    <a href="#" class="pay">去结算(3)</a>
+                    <a href="#" class="pay">去结算({{goodsCount}})</a>
                 </div>
             </div>
         </div>
@@ -48,13 +48,20 @@
 
 <script>
     import {mapState, mapMutations } from 'vuex'
+import { Dialog } from 'vant';
     export default {
         name: "Cart",
         computed:{
             ...mapState(['shopCart']),
             // 选择商品的总件数
             goodsCount(){
-
+                let selectedCount = 0;
+                Object.values(this.shopCart).forEach((goods, index)=>{
+                    if(goods.checked){
+                        selectedCount ++;
+                    }
+                });
+                return selectedCount;
             },
             // 商品是否全选
             isSelectedAll(){
@@ -85,6 +92,15 @@
             removeOutCart(goodsId, goodsNum){
                 if(goodsNum > 1){
                     this.REDUCE_CART({goodsId});
+                } else{
+                    Dialog.confirm({
+                        title: '温馨提示',
+                        message: '您确定要移除商品吗？'
+                    }).then(()=>{
+                        this.REDUCE_CART({goodsId});
+                    }).catch(()=>{
+                        console.log('取消移除了');
+                    });
                 }
             },
             // 增加商品
@@ -102,7 +118,7 @@
             },
             // 全选和取消全选
             selectedAll(isSelected){
-
+                this.SELECTED_All_GOODS({isSelected});
             }
         }
     }

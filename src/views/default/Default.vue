@@ -10,7 +10,7 @@
                 <span>分类</span>
                 <img slot="icon" slot-scope="props" :src="props.active ? category_icon.active : category_icon.normal">
             </van-tabbar-item>
-            <van-tabbar-item replace to="/default/cart">
+            <van-tabbar-item replace to="/default/cart" :info="goodsNum">
                 <span>购物车</span>
                 <img slot="icon" slot-scope="props" :src="props.active ? cart_icon.active : cart_icon.normal">
             </van-tabbar-item>
@@ -25,6 +25,8 @@
 </template>
 
 <script>
+    import {mapState } from 'vuex'
+
     export default {
         name: "Default",
         data() {
@@ -55,6 +57,19 @@
                 // 缓存到本地
                 sessionStorage.setItem('tabBarActiveIndex', value);
             }
+        },
+        computed:{
+            ...mapState(['shopCart']),
+            goodsNum(){
+                let num = 0;
+                if(this.shopCart){
+                    Object.values(this.shopCart).forEach((goods,index)=>{
+                        num += goods.num;
+                    });
+                }
+                return num;
+            }
+            
         }
     }
 </script>

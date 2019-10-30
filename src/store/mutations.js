@@ -69,6 +69,14 @@ export default {
             state.shopCart = {...shopCart};
             setStore('shopCart', state.shopCart);
         }
+    },
+    [SELECTED_All_GOODS](state,{isSelected}){
+        console.log(isSelected);
+        let shopCart = state.shopCart;
+        Object.values(shopCart).forEach((goods,index)=>{
+            goods.checked = !isSelected;
+        });
+        state.shopCart = {...shopCart};
     }
 
 
