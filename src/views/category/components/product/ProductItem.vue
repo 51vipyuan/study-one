@@ -18,9 +18,9 @@
             </div>
             <div class="priceWrapper">
                 <div class="price">
-                    <span class="f34">{{product.price}}</span>
+                    <span class="f34">{{product.price|moneyFormat}}</span>
                 </div>
-                <div class="iconCartWrapper">
+                <div class="iconCartWrapper" @click="addToCart(product)">
                     <svg viewBox="0 0 52 52" class="icon iconCart">
                         <defs>
                             <radialGradient cx="27.0288363%" cy="10.3693483%" fx="27.0288363%"
@@ -52,10 +52,29 @@
 </template>
 
 <script>
+    import {mapMutations, mapState} from 'vuex'
+    import {Toast} from 'vant'
+    import {setStore,getStore,removeStore } from '@/config/global'
     export default {
         name: "ProductItem",
         props:{
             products:Array
+        },
+        methods:{
+            ...mapMutations(["ADD_GOODS"]),
+            async addToCart(goods){
+                console.log(goods);
+                this.ADD_GOODS({
+                    goodsId: goods.id,
+                    goodsName: goods.name,
+                    smallImage: goods.small_image,
+                    goodsPrice: goods.price
+                });
+                Toast({
+                    message: '添加购物车成功',
+                    duration: 800
+                });
+            }
         }
     }
 </script>

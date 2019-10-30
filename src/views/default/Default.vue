@@ -29,7 +29,7 @@
         name: "Default",
         data() {
             return {
-                active: 0,
+                active: Number(sessionStorage.getItem('tabBarActiveIndex')) || 0,
                 home_icon: {
                     normal: require('@/images/tabbar/home_default.png'),
                     active: require('@/images/tabbar/home_selected.png')
@@ -46,6 +46,14 @@
                     normal: require('@/images/tabbar/mine_default.png'),
                     active: require('@/images/tabbar/mine_selected.png')
                 }
+            }
+        },
+        watch:{
+            active(value){
+                console.log(value);
+                let tabBarActiveIndex = value > 0?value:0;
+                // 缓存到本地
+                sessionStorage.setItem('tabBarActiveIndex', value);
             }
         }
     }
