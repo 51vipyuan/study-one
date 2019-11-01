@@ -39,7 +39,7 @@
                     </div>
                 </div>
                 <div class="tabBarRight">
-                    <a href="#" class="pay">去结算({{goodsCount}})</a>
+                    <a href="#" class="pay" @click="toPay()">去结算({{goodsCount}})</a>
                 </div>
             </div>
         </div>
@@ -48,7 +48,7 @@
 
 <script>
     import {mapState, mapMutations } from 'vuex'
-import { Dialog } from 'vant';
+    import { Dialog, Toast } from 'vant';
     export default {
         name: "Cart",
         computed:{
@@ -119,6 +119,17 @@ import { Dialog } from 'vant';
             // 全选和取消全选
             selectedAll(isSelected){
                 this.SELECTED_All_GOODS({isSelected});
+            },
+
+            toPay(){
+                if(this.totalPrice > 0){
+                    this.$router.push('/order');
+                } else{
+                    Toast({
+                        message: '请选择商品再结算',
+                        duration: 1000
+                    });
+                }
             }
         }
     }

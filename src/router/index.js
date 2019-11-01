@@ -12,6 +12,16 @@ const Category = ()=> import('./../views/category/Category.vue');
 const Cart = ()=> import('./../views/cart/Cart.vue');
 const Mine = ()=> import('./../views/mine/Mine.vue');
 
+const Order = ()=> import('./../views/order/Order.vue');
+const MyAddress = ()=> import('./../views/order/children/MyAddress.vue');
+const AddAddress = ()=> import('./../views/order/children/children/AddAddress.vue');
+const EditAddress = ()=> import('./../views/order/children/children/EditAddress.vue');
+
+const OrderDetail = ()=> import('./../views/order/children/OrderDetail.vue');
+
+const UserCenter = ()=> import('./../views/mine/children/UserCenter.vue')
+
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -45,23 +55,47 @@ const routes = [
       },{
         path: 'mine',
         name: 'mine',
-        component: Mine
+        component: Mine,
+        children: [
+          {
+            path: 'userCenter',
+            name: 'userCenter',
+            component: UserCenter
+          }
+        ]
       }
     ]
-  }/*,
-  {
-    path: '/',
-    name: 'home',
-    component: Home
   },
   {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/!* webpackChunkName: "about" *!/ '../views/About.vue')
-  }*/
+    path: '/order',
+    name: 'order',
+    component: Order,
+    children:[
+      {
+        path:'myAddress',
+        name:"myAddress",
+        component: MyAddress,
+        children: [
+          {
+            path: 'addAddress',
+            name: 'addAddress',
+            component: AddAddress
+          },
+          {
+            path: 'editAddress',
+            name: 'editAddress',
+            component: EditAddress
+          }
+        ]
+      },
+      {
+        path: 'orderDetail',
+        name: 'orderDetail',
+        component: OrderDetail
+      }
+      
+    ]
+  }
 
 ]
 
